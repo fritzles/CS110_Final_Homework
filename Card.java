@@ -4,6 +4,7 @@
  * Card object cannot change.
  *
  * @Jackie Horton
+ * @Michael Fritz (changes to the toString for War.java)
  */
 
 public class Card 
