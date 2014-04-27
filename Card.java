@@ -17,7 +17,7 @@ public class Card
                             CLUBS = 3;
     // ranks
     // Cards 2 through 9 have face value
-    public final static int ACE = 1,          
+    public final static int ACE = 14, //changed the ACE value becuase of the game description provided         
                             JACK = 11,        
                             QUEEN = 12,       
                             KING = 13;
