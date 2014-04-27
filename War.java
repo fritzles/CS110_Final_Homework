@@ -9,7 +9,7 @@ public class War extends JFrame {
   private JButton exit = new JButton("Quit");
 
   private JPanel frame = new JPanel(new BorderLayout());
-  private JPanel playingField = new JPanel(new GridLayout(2,2,15,15));
+  private JPanel playingField = new JPanel(new GridLayout(1,2,15,15));
   private JPanel buttons = new JPanel(new GridLayout(1,2,40,20));
   private JPanel information = new JPanel(new GridLayout(1,3,40,20));
 
@@ -76,7 +76,7 @@ public class War extends JFrame {
 
 			playerDeck = new JLabel("Player Deck:" + deck.cardsRemainingPlayer());
 			computerDeck = new JLabel("Computer Deck:" + deck.cardsRemainingComputer());
-			winner = new JLabel("Press Deal Card to start!");
+			winner = new JLabel("Press Deal Card to Start!");
 
 			information.add(computerDeck);
 			information.add(winner);
@@ -89,6 +89,8 @@ public class War extends JFrame {
 
     		
 			pack();
+
+
 		}
 	  }
   }
@@ -100,64 +102,84 @@ public class War extends JFrame {
 			JButton b = (JButton)(e.getSource());
 
 			information.remove(winner);
+			playingField.remove(playerCard);
+			playingField.remove(computerCard);
+
+			
 
 			winner = new JLabel("");
 
 			if(deck.cardsRemainingComputer() == 0){
-					System.out.println("computer wins game.");
-				}else if(deck.cardsRemainingPlayer() == 0){
-					System.out.println("player wins game.");
-				}else{
+				System.out.println("computer wins game.");
+			}else if(deck.cardsRemainingPlayer() == 0){
+				System.out.println("player wins game.");
+			}else{
 			
-			player = deck.dealCardPlayer();
-			computer = deck.dealCardComputer();
+				player = deck.dealCardPlayer();
+				computer = deck.dealCardComputer();
+				playerCard = displayCardFace(player);
+				computerCard = displayCardFace(computer);
 
-			deck.enqueueCardPile(player, computer);
 
-			if(deck.compareTo(player,computer) == 1){
-				winner = new JLabel("Player Wins");
-				System.out.println(player + ":" + computer);
-				deck.enqueueCardPlayer(deck.dequeueCardPile());
-			}else if(deck.compareTo(player, computer) == -1){
-				winner = new JLabel("Computer Wins");
-				System.out.println(player + ":" + computer);
-				deck.enqueueCardComputer(deck.dequeueCardPile());
-			}else if(deck.compareTo(player,computer) == 0){
-				winner = new JLabel("WAR");
-				System.out.println(player + ":" + computer);
-				deck.enqueueCardPile(deck.dealCardPlayer(), deck.dealCardComputer());
-				if(deck.cardsRemainingComputer() == 0){
-					System.out.println("computer wins game.");
-				}else if(deck.cardsRemainingPlayer() == 0){
-					System.out.println("player wins game.");
+
+				deck.enqueueCardPile(player, computer);
+
+				if(deck.compareTo(player,computer) == 1){
+					winner = new JLabel("Player Wins");
+					//System.out.println(player + ":" + computer);
+					playingField.add(computerCard);
+					playingField.add(playerCard);
+
+					deck.enqueueCardPlayer(deck.dequeueCardPile());
+
+
+				}else if(deck.compareTo(player, computer) == -1){
+					winner = new JLabel("Computer Wins");
+
+					playingField.add(computerCard);
+					playingField.add(playerCard);
+
+					//System.out.println(player + ":" + computer);
+					deck.enqueueCardComputer(deck.dequeueCardPile());
+				}else if(deck.compareTo(player,computer) == 0){
+					winner = new JLabel("WAR");
+
+					playingField.add(computerCard);
+					playingField.add(playerCard);
+
+					//System.out.println(player + ":" + computer);
+					deck.enqueueCardPile(deck.dealCardPlayer(), deck.dealCardComputer());
+					if(deck.cardsRemainingComputer() == 0){
+						System.out.println("computer wins game.");
+					}else if(deck.cardsRemainingPlayer() == 0){
+						System.out.println("player wins game.");
+					}
 				}
+
+				information.remove(computerDeck);
+				information.remove(winner);
+				information.remove(playerDeck);
+
+				playerDeck = new JLabel("Player Deck:" + deck.cardsRemainingPlayer());
+				computerDeck = new JLabel("Computer Deck:" + deck.cardsRemainingComputer());
+
+				information.add(computerDeck);
+				information.add(winner);
+				information.add(playerDeck);
+
+
+
+				pack();
+
+				
 			}
-
-			information.remove(computerDeck);
-			information.remove(winner);
-			information.remove(playerDeck);
-
-			playerDeck = new JLabel("Player Deck:" + deck.cardsRemainingPlayer());
-			computerDeck = new JLabel("Computer Deck:" + deck.cardsRemainingComputer());
-
-			information.add(computerDeck);
-			information.add(winner);
-			information.add(playerDeck);
-
-
-
-			pack();
-
-			setVisible(true);
-		}
-//}
 		}
 	  }
 
-	  public JLabel displayCardFace(String card){
+	  public JLabel displayCardFace(Card card){
 
 	  	String ext = ".png";
-	  	ImageIcon image = new ImageIcon(card + ext);
+	  	ImageIcon image = new ImageIcon(card.toString() + ext);
 	  	JLabel label = new JLabel(image);
 
 	  	return label;
