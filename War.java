@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+//import java.awt.Color.ChartColor;
+
+
 
 public class War extends JFrame {
 
@@ -8,11 +11,12 @@ public class War extends JFrame {
   private JButton dealCard = new JButton("Deal Card");
   private JButton exit = new JButton("Quit");
 
-  private JPanel frame = new JPanel(new BorderLayout());
+  private JPanel frame = new JPanel(new BorderLayout(30,30));
   private JPanel playingField = new JPanel(new GridLayout(1,2,15,15));
   private JPanel buttons = new JPanel(new GridLayout(1,2,40,20));
   private JPanel information = new JPanel(new GridLayout(1,3,40,20));
 
+  private Color dark_green = new Color(0x00, 0xC0, 0x00);
 
   private WarDeck deck;
 
@@ -31,7 +35,7 @@ public class War extends JFrame {
   	super("Fritz Card Games - War");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setMinimumSize(new Dimension(800, 600));
-    
+
     buttons.add(startGame);
     startGame.addActionListener(new StartGame());
 
@@ -39,6 +43,7 @@ public class War extends JFrame {
     exit.addActionListener(new ExitHandler());
 
     frame.add(buttons, BorderLayout.SOUTH);
+
 
 
     this.getContentPane().add(frame);
@@ -74,6 +79,8 @@ public class War extends JFrame {
 			frame.add(playingField, BorderLayout.CENTER);
 			frame.add(information, BorderLayout.NORTH);
 
+			playingField.setBackground(dark_green);
+
 			playerDeck = new JLabel("Player Deck:" + deck.cardsRemainingPlayer());
 			computerDeck = new JLabel("Computer Deck:" + deck.cardsRemainingComputer());
 			winner = new JLabel("Press Deal Card to Start!");
@@ -81,6 +88,9 @@ public class War extends JFrame {
 			information.add(computerDeck);
 			information.add(winner);
 			information.add(playerDeck);
+
+			playerCard = new JLabel();
+			computerCard = new JLabel();
 
 			
 
@@ -100,6 +110,7 @@ public class War extends JFrame {
 	  //	while(deck.cardsRemainingComputer() != 0){
 		if (e.getSource() instanceof JButton) {
 			JButton b = (JButton)(e.getSource());
+
 
 			information.remove(winner);
 			playingField.remove(playerCard);
