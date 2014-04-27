@@ -16,7 +16,7 @@ public class War extends JFrame {
   private JPanel buttons = new JPanel(new GridLayout(1,2,40,20));
   private JPanel information = new JPanel(new GridLayout(1,3,40,20));
 
-  private Color dark_green = new Color(0x00, 0xC0, 0x00);
+  private Color dark_green = new Color(39, 92, 25);
 
   private WarDeck deck;
 
