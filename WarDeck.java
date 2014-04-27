@@ -27,7 +27,7 @@ public class WarDeck
    {
       ct = 0;
       deckTemp = new Card[CARDS_IN_DECK];
-      for (int r = Card.ACE; r<=Card.KING;r++)
+      for (int r = 2; r<=Card.ACE;r++)
       {
          for (int s=Card.SPADES;s<=Card.CLUBS;s++)
          {

@@ -121,11 +121,18 @@ public class War extends JFrame {
 			winner = new JLabel("");
 
 			if(deck.cardsRemainingComputer() == 0){
-				System.out.println("computer wins game.");
+				//change out buttons cause grid layout is fun!!! (not)
+				buttons.remove(dealCard);
+				buttons.remove(exit);
+				buttons.add(startGame);
+				buttons.add(exit);
 			}else if(deck.cardsRemainingPlayer() == 0){
-				System.out.println("player wins game.");
+				//change out buttons cause grid layout is fun!!! (not)
+				buttons.remove(startGame);
+				buttons.remove(exit);
+				buttons.add(dealCard);
+				buttons.add(exit);			
 			}else{
-			
 				player = deck.dealCardPlayer();
 				computer = deck.dealCardComputer();
 				playerCard = displayCardFace(player);
@@ -136,8 +143,8 @@ public class War extends JFrame {
 				deck.enqueueCardPile(player, computer);
 
 				if(deck.compareTo(player,computer) == 1){
-					winner = new JLabel("Player Wins");
-					//System.out.println(player + ":" + computer);
+					winner = new JLabel("Player Wins!");
+					System.out.println(player + ":" + computer);
 					playingField.add(computerCard);
 					playingField.add(playerCard);
 
@@ -145,15 +152,15 @@ public class War extends JFrame {
 
 
 				}else if(deck.compareTo(player, computer) == -1){
-					winner = new JLabel("Computer Wins");
+					winner = new JLabel("Computer Wins!");
 
 					playingField.add(computerCard);
 					playingField.add(playerCard);
 
-					//System.out.println(player + ":" + computer);
+					System.out.println(player + ":" + computer);
 					deck.enqueueCardComputer(deck.dequeueCardPile());
 				}else if(deck.compareTo(player,computer) == 0){
-					winner = new JLabel("WAR");
+					winner = new JLabel("WAR!");
 
 					playingField.add(computerCard);
 					playingField.add(playerCard);
@@ -161,9 +168,19 @@ public class War extends JFrame {
 					//System.out.println(player + ":" + computer);
 					deck.enqueueCardPile(deck.dealCardPlayer(), deck.dealCardComputer());
 					if(deck.cardsRemainingComputer() == 0){
-						System.out.println("computer wins game.");
+						winner = new JLabel("Congratulations! You win!");
+						//change out buttons cause grid layout is fun!!! (not)
+						buttons.remove(startGame);
+						buttons.remove(exit);
+						buttons.add(dealCard);
+						buttons.add(exit);
 					}else if(deck.cardsRemainingPlayer() == 0){
-						System.out.println("player wins game.");
+						winner = new JLabel("You lose.");
+						//change out buttons cause grid layout is fun!!! (not)
+						buttons.remove(startGame);
+						buttons.remove(exit);
+						buttons.add(dealCard);
+						buttons.add(exit);
 					}
 				}
 

@@ -92,7 +92,6 @@ public class Card
    public String getRankAsString() 
    {
         switch ( rank ) {
-           case 1:   return "1";
            case 2:   return "2";
            case 3:   return "3";
            case 4:   return "4";
@@ -105,6 +104,7 @@ public class Card
            case 11:  return "j";
            case 12:  return "q";
            case 13:  return "k";
+           case 14:  return "a";
            default:  return "??";
         }
     }
