@@ -24,6 +24,9 @@ public class War extends JFrame {
 
   private WarDeck deck;
 
+  private ActionListener turnTopCard = new TurnTopCard();
+  private ActionListener exitHandler = new ExitHandler();
+
   private Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 
   private JLabel playerCard, playerDeck, computerCard, computerDeck, winner;
@@ -53,7 +56,7 @@ public class War extends JFrame {
     startGame.addActionListener(new StartGame());
 
     buttons.add(exit);
-    exit.addActionListener(new ExitHandler());
+    exit.addActionListener(exitHandler);
 
     frame.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -113,7 +116,7 @@ public class War extends JFrame {
 
 
 			//create button and deck
-			dealCard.addActionListener(new TurnTopCard());
+			dealCard.addActionListener(turnTopCard);
 			deck = new WarDeck();
 
 			//change out buttons cause grid layout is fun!!! (not)
@@ -228,8 +231,7 @@ public class War extends JFrame {
 
 					frame.remove(cardBack2);
 					frame.add(noDeckLeft, BorderLayout.WEST);
-
-					
+					dealCard.removeActionListener(turnTopCard);
 					
 
 				}else if(deck.cardsRemainingPlayer() == 0){
@@ -242,6 +244,8 @@ public class War extends JFrame {
 
 					frame.remove(cardBack);
 					frame.add(noDeckLeft, BorderLayout.EAST);
+					dealCard.removeActionListener(turnTopCard);
+
 				}
 
 				playerDeck.setForeground(Color.WHITE);
@@ -256,7 +260,7 @@ public class War extends JFrame {
 				pack();
 			}
 			catch (QueueException qe){
-				System.out.print("Do something to catch me!");
+				dealCard.removeActionListener(turnTopCard);
 			}
 		}
 	  }
