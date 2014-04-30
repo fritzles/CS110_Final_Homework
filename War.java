@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 //import java.awt.Color.ChartColor;
 
 
@@ -17,8 +19,12 @@ public class War extends JFrame {
   private JPanel information = new JPanel(new GridLayout(1,3,40,20));
 
   private Color dark_green = new Color(39, 92, 25);
+  private Color maple = new Color(51, 25, 0);
+  private Color gold = new Color(204,204,0);
 
   private WarDeck deck;
+
+  private Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 
   private JLabel playerCard, playerDeck, computerCard, computerDeck, winner;
 
@@ -28,6 +34,8 @@ public class War extends JFrame {
 
   private	JLabel cardBack = new JLabel(cardback);
   private	JLabel cardBack2 = new JLabel(cardback);
+  private 	JLabel welcomeMessage = new JLabel("Welcome to War!");
+  private 	JLabel welcomeContinued = new JLabel("Press 'Start Game' to begin.");
 
 
   public War() { // the constructor
@@ -42,9 +50,37 @@ public class War extends JFrame {
     buttons.add(exit);
     exit.addActionListener(new ExitHandler());
 
+    frame.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+    frame.setBackground(maple);
+    information.setBackground(maple);
+    buttons.setBackground(maple);
+    playingField.setBackground(dark_green);
+
+    startGame.setBackground(dark_green);
+    exit.setBackground(Color.RED);
+    dealCard.setBackground(dark_green);
+
+    startGame.setForeground(Color.WHITE);
+    exit.setForeground(Color.WHITE);
+    dealCard.setForeground(Color.WHITE);
+
+    startGame.setBorder(raisedbevel);
+    exit.setBorder(raisedbevel);
+    dealCard.setBorder(raisedbevel);
+    playingField.setBorder(raisedbevel);
+
+    welcomeMessage.setForeground(Color.WHITE);
+    welcomeContinued.setForeground(Color.WHITE); 
+
+    information.add(welcomeMessage,SwingConstants.CENTER);
+    playingField.add(welcomeContinued,SwingConstants.CENTER);
+
+    frame.add(playingField, BorderLayout.CENTER);
+    frame.add(cardBack2, BorderLayout.EAST);
+    frame.add(cardBack, BorderLayout.WEST);
     frame.add(buttons, BorderLayout.SOUTH);
-
-
+    frame.add(information, BorderLayout.NORTH);
 
     this.getContentPane().add(frame);
     pack();
@@ -57,6 +93,7 @@ public class War extends JFrame {
     public void actionPerformed(ActionEvent e) {
 
         System.exit(0);
+
     }
   }
   class StartGame implements ActionListener {
@@ -64,6 +101,10 @@ public class War extends JFrame {
 	  public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JButton) {
 			JButton b = (JButton)(e.getSource());
+
+			information.remove(welcomeMessage);
+    		playingField.remove(welcomeContinued);
+
 
 
 			//create button and deck
@@ -78,16 +119,21 @@ public class War extends JFrame {
 
 			frame.add(playingField, BorderLayout.CENTER);
 			frame.add(information, BorderLayout.NORTH);
+			
 
-			playingField.setBackground(dark_green);
 
 			playerDeck = new JLabel("Player Deck:" + deck.cardsRemainingPlayer());
 			computerDeck = new JLabel("Computer Deck:" + deck.cardsRemainingComputer());
 			winner = new JLabel("Press Deal Card to Start!");
 
-			information.add(computerDeck);
-			information.add(winner);
-			information.add(playerDeck);
+			playerDeck.setForeground(Color.WHITE);
+			winner.setForeground(Color.WHITE);
+			computerDeck.setForeground(Color.WHITE);
+
+			information.add(computerDeck,SwingConstants.CENTER);
+			information.add(winner,SwingConstants.CENTER);
+			information.add(playerDeck,SwingConstants.CENTER);
+
 
 			playerCard = new JLabel();
 			computerCard = new JLabel();
@@ -120,19 +166,7 @@ public class War extends JFrame {
 
 			winner = new JLabel("");
 
-			if(deck.cardsRemainingComputer() == 0){
-				//change out buttons cause grid layout is fun!!! (not)
-				buttons.remove(dealCard);
-				buttons.remove(exit);
-				buttons.add(startGame);
-				buttons.add(exit);
-			}else if(deck.cardsRemainingPlayer() == 0){
-				//change out buttons cause grid layout is fun!!! (not)
-				buttons.remove(startGame);
-				buttons.remove(exit);
-				buttons.add(dealCard);
-				buttons.add(exit);			
-			}else{
+			
 				player = deck.dealCardPlayer();
 				computer = deck.dealCardComputer();
 				playerCard = displayCardFace(player);
@@ -144,7 +178,6 @@ public class War extends JFrame {
 
 				if(deck.compareTo(player,computer) == 1){
 					winner = new JLabel("Player Wins!");
-					System.out.println(player + ":" + computer);
 					playingField.add(computerCard);
 					playingField.add(playerCard);
 
@@ -157,7 +190,6 @@ public class War extends JFrame {
 					playingField.add(computerCard);
 					playingField.add(playerCard);
 
-					System.out.println(player + ":" + computer);
 					deck.enqueueCardComputer(deck.dequeueCardPile());
 				}else if(deck.compareTo(player,computer) == 0){
 					winner = new JLabel("WAR!");
@@ -167,21 +199,7 @@ public class War extends JFrame {
 
 					//System.out.println(player + ":" + computer);
 					deck.enqueueCardPile(deck.dealCardPlayer(), deck.dealCardComputer());
-					if(deck.cardsRemainingComputer() == 0){
-						winner = new JLabel("Congratulations! You win!");
-						//change out buttons cause grid layout is fun!!! (not)
-						buttons.remove(startGame);
-						buttons.remove(exit);
-						buttons.add(dealCard);
-						buttons.add(exit);
-					}else if(deck.cardsRemainingPlayer() == 0){
-						winner = new JLabel("You lose.");
-						//change out buttons cause grid layout is fun!!! (not)
-						buttons.remove(startGame);
-						buttons.remove(exit);
-						buttons.add(dealCard);
-						buttons.add(exit);
-					}
+
 				}
 
 				information.remove(computerDeck);
@@ -191,16 +209,26 @@ public class War extends JFrame {
 				playerDeck = new JLabel("Player Deck:" + deck.cardsRemainingPlayer());
 				computerDeck = new JLabel("Computer Deck:" + deck.cardsRemainingComputer());
 
-				information.add(computerDeck);
-				information.add(winner);
-				information.add(playerDeck);
+				if(deck.cardsRemainingComputer() == 0){
+					winner = new JLabel("Congratulations! You win!");
+						
+					dealCard.removeActionListener( new TurnTopCard());
 
+				}else if(deck.cardsRemainingPlayer() == 0){
+					winner = new JLabel("You lose.");
+						
+					dealCard.removeActionListener( new TurnTopCard());
+				}
 
+				playerDeck.setForeground(Color.WHITE);
+				winner.setForeground(Color.WHITE);
+				computerDeck.setForeground(Color.WHITE);
 
+				information.add(computerDeck,SwingConstants.CENTER);
+				information.add(winner,SwingConstants.CENTER);
+				information.add(playerDeck,SwingConstants.CENTER);
+			
 				pack();
-
-				
-			}
 		}
 	  }
 
