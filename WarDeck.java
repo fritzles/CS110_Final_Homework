@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.ArrayList;
 public class WarDeck 
 {
    final int CARDS_IN_DECK = 52;
@@ -11,6 +12,7 @@ public class WarDeck
 
    Card [] deckTemp;
    int ctPlayer, ctComputer, ct;
+
 
    public WarDeck()
    {
@@ -108,6 +110,10 @@ public class WarDeck
          deckTemp[randNum]=temp;
       }
    }
+
+   
+
+
    public boolean isEmpty()
    {
       return ((cardsRemainingPlayer() == 0) || (cardsRemainingComputer() == 0));

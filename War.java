@@ -31,9 +31,12 @@ public class War extends JFrame {
   private Card player, computer, playerTemp, computerTemp;
 
   private	ImageIcon cardback = new ImageIcon("b1fv.png");
+  private 	ImageIcon noDeck = new ImageIcon("done.png");
 
   private	JLabel cardBack = new JLabel(cardback);
   private	JLabel cardBack2 = new JLabel(cardback);
+  private 	JLabel noDeckLeft = new JLabel(noDeck);
+
   private 	JLabel welcomeMessage = new JLabel("Welcome to War!");
   private 	JLabel welcomeContinued = new JLabel("Press 'Start Game' to begin.");
 
@@ -42,7 +45,9 @@ public class War extends JFrame {
 
   	super("Fritz Card Games - War");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setMinimumSize(new Dimension(800, 600));
+    setMinimumSize(new Dimension(700, 550));
+	setResizable(false);
+
 
     buttons.add(startGame);
     startGame.addActionListener(new StartGame());
@@ -130,9 +135,9 @@ public class War extends JFrame {
 			winner.setForeground(Color.WHITE);
 			computerDeck.setForeground(Color.WHITE);
 
-			information.add(computerDeck,SwingConstants.CENTER);
-			information.add(winner,SwingConstants.CENTER);
 			information.add(playerDeck,SwingConstants.CENTER);
+			information.add(winner,SwingConstants.CENTER);
+			information.add(computerDeck,SwingConstants.CENTER);
 
 
 			playerCard = new JLabel();
@@ -157,6 +162,7 @@ public class War extends JFrame {
 		if (e.getSource() instanceof JButton) {
 			JButton b = (JButton)(e.getSource());
 
+			try{
 
 			information.remove(winner);
 			playingField.remove(playerCard);
@@ -180,12 +186,16 @@ public class War extends JFrame {
 					winner = new JLabel("Player Wins!");
 					playingField.add(computerCard);
 					playingField.add(playerCard);
+					winner.setForeground(Color.WHITE);
+
 
 					deck.enqueueCardPlayer(deck.dequeueCardPile());
 
 
 				}else if(deck.compareTo(player, computer) == -1){
 					winner = new JLabel("Computer Wins!");
+					winner.setForeground(Color.WHITE);
+
 
 					playingField.add(computerCard);
 					playingField.add(playerCard);
@@ -193,6 +203,7 @@ public class War extends JFrame {
 					deck.enqueueCardComputer(deck.dequeueCardPile());
 				}else if(deck.compareTo(player,computer) == 0){
 					winner = new JLabel("WAR!");
+					winner.setForeground(Color.RED);
 
 					playingField.add(computerCard);
 					playingField.add(playerCard);
@@ -211,24 +222,42 @@ public class War extends JFrame {
 
 				if(deck.cardsRemainingComputer() == 0){
 					winner = new JLabel("Congratulations! You win!");
+					winner.setForeground(Color.YELLOW);
 						
 					dealCard.removeActionListener( new TurnTopCard());
+
+					frame.remove(cardBack2);
+					frame.add(noDeckLeft, BorderLayout.WEST);
+
+					
+					
 
 				}else if(deck.cardsRemainingPlayer() == 0){
 					winner = new JLabel("You lose.");
+					winner.setForeground(Color.RED);
 						
 					dealCard.removeActionListener( new TurnTopCard());
+					playingField.remove(playerCard);
+					playingField.remove(computerCard);
+
+					frame.remove(cardBack);
+					frame.add(noDeckLeft, BorderLayout.EAST);
 				}
 
 				playerDeck.setForeground(Color.WHITE);
-				winner.setForeground(Color.WHITE);
 				computerDeck.setForeground(Color.WHITE);
 
-				information.add(computerDeck,SwingConstants.CENTER);
-				information.add(winner,SwingConstants.CENTER);
+
 				information.add(playerDeck,SwingConstants.CENTER);
+				information.add(winner,SwingConstants.CENTER);
+				information.add(computerDeck,SwingConstants.CENTER);
+
 			
 				pack();
+			}
+			catch (QueueException qe){
+				System.out.print("Do something to catch me!");
+			}
 		}
 	  }
 
@@ -240,6 +269,7 @@ public class War extends JFrame {
 
 	  	return label;
 	  }
+
   }
   public static void main(String[] args) {
 	  new War();
